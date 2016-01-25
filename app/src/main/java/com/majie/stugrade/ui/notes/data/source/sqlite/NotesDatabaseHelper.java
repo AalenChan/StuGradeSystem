@@ -1,0 +1,53 @@
+package com.majie.stugrade.ui.notes.data.source.sqlite;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+public class NotesDatabaseHelper extends SQLiteOpenHelper {
+
+    private static final String TAG = NotesDatabaseHelper.class.getSimpleName();
+    private static final String DATABASE_SCHEMA_FILE_NAME_PATTERN = "notes_schema-v%s.sql";
+    private static final String DATABASE_NAME = "notes.db";
+    private static final int DATABASE_VERSION = 1;
+
+    private final Context context;
+
+    public NotesDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        InputStream fileStream = null;
+        try {
+            fileStream = context.getAssets().open(String.format(DATABASE_SCHEMA_FILE_NAME_PATTERN, DATABASE_VERSION));
+            String[] statements = SQLFileParser.getSQLStatements(fileStream);
+            for (String statement : statements) {
+                Log.v(TAG, statement);
+                db.execSQL(statement);
+            }
+        } catch (IOException ex) {
+            Log.e(TAG, "Unable to open schema file", ex);
+        } finally {
+            if (fileStream != null) {
+                try {
+                    fileStream.close();
+                } catch (IOException ex) {
+                    Log.e(TAG, "Unable to close stream", ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        context.deleteDatabase(DATABASE_NAME);
+        onCreate(db);
+    }
+}

@@ -374,7 +374,7 @@ public class AlertWindow extends Dialog {
 		int width = dm.widthPixels * 11 / 12;
 		int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 		if (mLstContent != null) {
-			int total = UIUtils.getTotalHeightofListView(mLstContent);
+			int total = UIUtils.getTotalHeightOfListView(mLstContent);
 			int maxListHeight = UIUtils.dip2px(context,MAX_HEIGHT_WITH_LIST_IN_DP);
 			if (total > maxListHeight) {
 				ViewGroup.LayoutParams params = mLstContent.getLayoutParams();

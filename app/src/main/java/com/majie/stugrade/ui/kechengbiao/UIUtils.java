@@ -21,14 +21,24 @@ import com.majie.stugrade.R;
 
 /**
  * 
- * @author saymagic
- *
  */
 public class UIUtils {
 
 	/** mAlertWindow */
 	private static AlertWindow mAlertWindow;
 
+	/**
+	 *
+	 * @param context 上下文
+	 * @param style style
+	 * @param title 弹出框标题
+	 * @param message 弹出框信息
+	 * @param positiveText positiveBtn的文字
+	 * @param positiveListener positiveBtn的事件监听
+	 * @param negativeText negativeBtn的文字
+	 * @param negativeListener negativeBtn的事件监听
+	 * @return 弹出框
+	 */
 	private static AlertWindow getAlertWindow(Context context, int style,
 			CharSequence title, CharSequence message, CharSequence positiveText,
 			final AlertWindow.OnClickListener positiveListener,
@@ -245,7 +255,6 @@ public class UIUtils {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				dialog.dismiss();
 			}
 		});
@@ -332,7 +341,7 @@ public class UIUtils {
 	}
 
 
-	public static int getTotalHeightofListView(ListView listView) {
+	public static int getTotalHeightOfListView(ListView listView) {
 		ListAdapter adapter = listView.getAdapter();
 		int totalHeight = 0;
 		for (int i = 0; i < adapter.getCount(); i++) {

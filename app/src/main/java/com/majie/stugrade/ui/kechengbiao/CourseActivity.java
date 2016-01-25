@@ -13,9 +13,8 @@ import com.majie.stugrade.ui.kechengbiao.data.DataManager;
 import com.majie.stugrade.ui.kechengbiao.data.bean.Course;
 
 /**
- * 
- * @author saymagic
- *
+ * 添加课程界面，写课程详细信息
+ * @author majie
  */
 public class CourseActivity extends BaseActivity {
 
@@ -26,7 +25,7 @@ public class CourseActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course);
-		if((Course) getIntent().getSerializableExtra("course") != null){
+		if(getIntent().getSerializableExtra("course") != null){
 			course = (Course) getIntent().getSerializableExtra("course");
 		}
 		else {
@@ -35,6 +34,10 @@ public class CourseActivity extends BaseActivity {
 		initView();
 		setListeners();
 	}
+
+	/**
+	 * 设置添加课程的事件
+	 */
 	private void setListeners() {
 		addBtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -82,6 +85,10 @@ public class CourseActivity extends BaseActivity {
 			}
 		});
 	}
+
+	/**
+	 * 初始化页面控件
+	 */
 	private void initView() {
 		addBtn = (Button) findViewById(R.id.btn_add_course);
 		courseName = (EditText) findViewById(R.id.course_name);
@@ -98,8 +105,5 @@ public class CourseActivity extends BaseActivity {
 		}else{
 			setTitle(getResources().getString(R.string.add_course));
 		}
-
 	}
-
-
 }

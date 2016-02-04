@@ -22,6 +22,5 @@ public class App extends Application {
         locationService = new LocationService(getApplicationContext());
         mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         WriteLog.getInstance().init(); // 初始化日志
-
     }
 }

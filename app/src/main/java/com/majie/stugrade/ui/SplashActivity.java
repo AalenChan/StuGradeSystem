@@ -1,4 +1,4 @@
-package com.majie.stugrade.ui.weather.activity;
+package com.majie.stugrade.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.majie.stugrade.R;
-import com.majie.stugrade.ui.LoginActivity;
-import com.majie.stugrade.ui.MainActivity;
 
 
 @SuppressLint("InlinedApi")
@@ -22,7 +20,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         SharedPreferences sp = getSharedPreferences("stuGrade", MODE_PRIVATE);
-        boolean loggedIn = TextUtils.isEmpty(sp.getString("user_id",""));
+        boolean loggedIn = TextUtils.isEmpty(sp.getString("user_id", ""));
 
         if (loggedIn) {
             Handler handler = new Handler();

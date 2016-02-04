@@ -91,6 +91,9 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".ui.AboutActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ScoreRulesActivity" android:screenOrientation="portrait"
+            android:label="评分规则"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

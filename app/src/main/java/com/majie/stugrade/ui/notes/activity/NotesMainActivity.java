@@ -13,10 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.majie.stugrade.R;
+import com.majie.stugrade.ui.notes.adapter.NotesAdapter;
 import com.majie.stugrade.ui.notes.data.Note;
 import com.majie.stugrade.ui.notes.data.dao.NoteDAO;
 import com.majie.stugrade.ui.notes.view.ShowHideOnScroll;
-import com.majie.stugrade.ui.notes.adapter.NotesAdapter;
 import com.shamanland.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -39,7 +39,8 @@ public class NotesMainActivity extends RoboActionBarActivity {
     @InjectView(android.R.id.list)    private ListView listView;
     @InjectView(R.id.add_note_button) private FloatingActionButton addNoteButton;
 
-    @Inject private NoteDAO noteDAO;
+    @Inject
+    private NoteDAO noteDAO;
 
     private ArrayList<Integer> selectedPositions;
     private ArrayList<NotesAdapter.NoteViewWrapper> notesData;
@@ -50,6 +51,7 @@ public class NotesMainActivity extends RoboActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         listView.setOnTouchListener(new ShowHideOnScroll(addNoteButton, getSupportActionBar()));
         addNoteButton.setOnClickListener(new View.OnClickListener() {
 
@@ -68,13 +70,10 @@ public class NotesMainActivity extends RoboActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == NEW_NOTE_RESULT_CODE) {
-            if (resultCode == RESULT_OK) addNote(data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == NEW_NOTE_RESULT_CODE) addNote(data);
+            if (requestCode == EDIT_NOTE_RESULT_CODE) updateNote(data);
         }
-        if (requestCode == EDIT_NOTE_RESULT_CODE) {
-            if (resultCode == RESULT_OK) updateNote(data);
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 

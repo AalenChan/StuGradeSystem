@@ -3,6 +3,7 @@ package com.majie.stugrade.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,13 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.majie.stugrade.R;
 import com.majie.stugrade.ui.kechengbiao.ContentMainActivity;
 import com.majie.stugrade.ui.notes.activity.NotesMainActivity;
 import com.majie.stugrade.ui.weather.activity.WeatherActivity;
 
+
 public class MainActivity extends BaseActivity {
     private long exitTime = 0;
+    private static final int animateTime = 500;
 
     private Button scoreBtn;
     private Button weatherBtn;
@@ -42,6 +47,7 @@ public class MainActivity extends BaseActivity {
         scoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YoYo.with(Techniques.Swing).duration(animateTime).playOn(scoreBtn);
                 showToast("分数");
             }
         });
@@ -49,22 +55,36 @@ public class MainActivity extends BaseActivity {
         weatherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
-                startActivity(intent);
+                YoYo.with(Techniques.Swing).duration(animateTime).playOn(weatherBtn);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
+                        startActivity(intent);
+                    }
+                }, animateTime);
             }
         });
 
         notesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NotesMainActivity.class);
-                startActivity(intent);
+                YoYo.with(Techniques.Swing).duration(animateTime).playOn(notesBtn);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, NotesMainActivity.class);
+                        startActivity(intent);
+                    }
+                }, animateTime);
             }
         });
 
         introductionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YoYo.with(Techniques.Swing).duration(animateTime).playOn(introductionBtn);
                 showToast("介绍");
             }
         });
@@ -72,15 +92,28 @@ public class MainActivity extends BaseActivity {
         scoreRulesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("评分规则");
+                YoYo.with(Techniques.Swing).duration(animateTime).playOn(scoreRulesBtn);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, ScoreRulesActivity.class);
+                        startActivity(intent);
+                    }
+                }, animateTime);
             }
         });
 
         courseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ContentMainActivity.class);
-                startActivity(intent);
+                YoYo.with(Techniques.Swing).duration(animateTime).playOn(courseBtn);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, ContentMainActivity.class);
+                        startActivity(intent);
+                    }
+                }, animateTime);
             }
         });
 
@@ -100,8 +133,9 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 return true;
-            case R.id.main_exit:
-                showToast("exit");
+            case R.id.about:
+                Intent intent = new Intent(MainActivity.this,AboutActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

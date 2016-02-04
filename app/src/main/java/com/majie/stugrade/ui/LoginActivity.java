@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.majie.stugrade.R;
 
 public class LoginActivity extends BaseActivity{
@@ -47,8 +49,15 @@ public class LoginActivity extends BaseActivity{
 	 * 先判断是否为空，如果为空不进行登录。直接提示错误。
 	 */
 	private void login() {
-		if (TextUtils.isEmpty(accountEt.getText().toString().trim()) || TextUtils.isEmpty(pwdEt.getText().toString().trim())) {
-			Toast.makeText(LoginActivity.this, "检查账号密码", Toast.LENGTH_SHORT).show();
+		if (TextUtils.isEmpty(accountEt.getText().toString().trim())) {
+			YoYo.with(Techniques.Shake).duration(700).playOn(accountEt);
+			Toast.makeText(LoginActivity.this, "检查密码", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		if (TextUtils.isEmpty(pwdEt.getText().toString().trim())) {
+			YoYo.with(Techniques.Shake).duration(700).playOn(pwdEt);
+			Toast.makeText(LoginActivity.this, "检查密码", Toast.LENGTH_SHORT).show();
 			return;
 		}
 

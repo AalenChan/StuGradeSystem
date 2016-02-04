@@ -1,10 +1,9 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.majie.stuAct.MainActivity" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/main_exit"
+        android:id="@+id/about"
         android:showAsAction="always"
-        android:title="@string/action_settings"/>
+        android:title="关于"
+        />
 
 </menu>

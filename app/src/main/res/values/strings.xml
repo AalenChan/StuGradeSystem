@@ -78,4 +78,5 @@
     <string name="life_index">生活指数</string>
     <string name="disclaimer">天气预报数据由百度天气提供</string>
     <string name="update_tips">已更新至最新天气</string>
+
 </resources>

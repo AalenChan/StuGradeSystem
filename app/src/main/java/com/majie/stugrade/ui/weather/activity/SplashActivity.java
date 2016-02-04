@@ -3,10 +3,13 @@ package com.majie.stugrade.ui.weather.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.majie.stugrade.R;
+import com.majie.stugrade.ui.LoginActivity;
 import com.majie.stugrade.ui.MainActivity;
 
 
@@ -18,16 +21,25 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        SharedPreferences sp = getSharedPreferences("stuGrade", MODE_PRIVATE);
+        boolean loggedIn = TextUtils.isEmpty(sp.getString("user_id",""));
 
-            @Override
-            public void run() {
-                Intent intent = new Intent();
-                intent.setClass(SplashActivity.this, MainActivity.class);
-                SplashActivity.this.startActivity(intent);
-                SplashActivity.this.finish();
-            }
-        }, 2500);
+        if (loggedIn) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    Intent intent = new Intent();
+                    intent.setClass(SplashActivity.this, MainActivity.class);
+                    SplashActivity.this.startActivity(intent);
+                    SplashActivity.this.finish();
+                }
+            }, 2500);
+        } else {
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            SplashActivity.this.finish();
+        }
     }
 }

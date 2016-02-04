@@ -343,11 +343,6 @@ public class WeatherActivity extends BaseActivity implements OnClickListener, On
 
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() - mExitTime > 2000) {
-            mExitTime = System.currentTimeMillis();
-            Toast.makeText(this, R.string.click2exit, Toast.LENGTH_SHORT).show();
-        } else {
-            finish();
-        }
+        finish();
     }
 }

@@ -2,6 +2,7 @@ package com.majie.stugrade.ui;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -60,6 +61,9 @@ public class LoginActivity extends BaseActivity{
 			Toast.makeText(LoginActivity.this, "检查密码", Toast.LENGTH_SHORT).show();
 			return;
 		}
+
+		SharedPreferences sp = getSharedPreferences("stuGrade", MODE_PRIVATE);
+		sp.edit().putString("user_id",accountEt.getText().toString().trim()).apply();
 
 		Intent intent = new Intent(LoginActivity.this,MainActivity.class);
 		startActivity(intent);

@@ -2,8 +2,12 @@
 
     <item
         android:id="@+id/about"
-        android:showAsAction="always"
+        android:showAsAction="collapseActionView"
         android:title="关于"
         />
-
+    <item
+        android:id="@+id/exit"
+        android:showAsAction="collapseActionView"
+        android:title="退出"
+        />
 </menu>

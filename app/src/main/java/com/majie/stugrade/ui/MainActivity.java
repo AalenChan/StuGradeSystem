@@ -4,6 +4,8 @@ package com.majie.stugrade.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -85,7 +87,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 YoYo.with(Techniques.Swing).duration(animateTime).playOn(introductionBtn);
-                showToast("介绍");
+                showToast("模式设置");
             }
         });
 
@@ -137,13 +139,18 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(MainActivity.this,AboutActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.exit:
+                getSharedPreferences("stuGrade", MODE_PRIVATE).edit().putString("user_id","").commit();
+                Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent1);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();

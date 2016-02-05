@@ -118,6 +118,8 @@
 
         <activity android:name=".ui.PreferenceActivity" android:screenOrientation="portrait"
             android:label="设置地图定位规则"/>
+        <activity android:name=".ui.score.ScoreMainActivity" android:screenOrientation="portrait"
+            android:label="分数"/>
     </application>
 
 

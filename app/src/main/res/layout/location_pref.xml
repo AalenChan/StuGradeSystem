@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="网络"
+            android:text="Wi-Fi"
             android:layout_weight="1"
             android:textSize="18sp"/>
 
@@ -51,7 +51,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Wi-Fi"
+            android:text="混合定位"
             android:layout_weight="1"
             android:textSize="18sp"/>
 

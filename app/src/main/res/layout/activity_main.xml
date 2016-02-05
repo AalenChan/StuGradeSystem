@@ -1,16 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_backgroud"
     android:orientation="vertical">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:id="@+id/location"
-        android:textColor="@android:color/black"/>
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -201,4 +193,10 @@
         </TableRow>
     </TableLayout>
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:id="@+id/location"
+        android:textColor="@android:color/black"/>
+</FrameLayout>

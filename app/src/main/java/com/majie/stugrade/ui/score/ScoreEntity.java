@@ -3,10 +3,10 @@ package com.majie.stugrade.ui.score;
 public class ScoreEntity {
     private int id;
     private long date;
-    private float studyScore;
-    private float exerciseScore;
-    private float restScore;
-    private float otherScore;
+    private double studyScore;
+    private double exerciseScore;
+    private double restScore;
+    private double otherScore;
 
     public int getId() {
         return id;
@@ -24,35 +24,35 @@ public class ScoreEntity {
         this.date = date;
     }
 
-    public float getStudyScore() {
+    public double getStudyScore() {
         return studyScore;
     }
 
-    public void setStudyScore(float studyScore) {
+    public void setStudyScore(double studyScore) {
         this.studyScore = studyScore;
     }
 
-    public float getExerciseScore() {
+    public double getExerciseScore() {
         return exerciseScore;
     }
 
-    public void setExerciseScore(float exerciseScore) {
+    public void setExerciseScore(double exerciseScore) {
         this.exerciseScore = exerciseScore;
     }
 
-    public float getRestScore() {
+    public double getRestScore() {
         return restScore;
     }
 
-    public void setRestScore(float restScore) {
+    public void setRestScore(double restScore) {
         this.restScore = restScore;
     }
 
-    public float getOtherScore() {
+    public double getOtherScore() {
         return otherScore;
     }
 
-    public void setOtherScore(float otherScore) {
+    public void setOtherScore(double otherScore) {
         this.otherScore = otherScore;
     }
 }

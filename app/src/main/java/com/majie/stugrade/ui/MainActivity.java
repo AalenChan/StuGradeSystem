@@ -24,6 +24,7 @@ import com.majie.stugrade.R;
 import com.majie.stugrade.ui.baidu.service.LocationService;
 import com.majie.stugrade.ui.kechengbiao.ContentMainActivity;
 import com.majie.stugrade.ui.notes.activity.NotesMainActivity;
+import com.majie.stugrade.ui.score.ScoreMainActivity;
 import com.majie.stugrade.ui.weather.activity.WeatherActivity;
 
 
@@ -59,7 +60,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 YoYo.with(Techniques.Swing).duration(animateTime).playOn(scoreBtn);
-                showToast("分数");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, ScoreMainActivity.class);
+                        startActivity(intent);
+                    }
+                }, animateTime);
             }
         });
 

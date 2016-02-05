@@ -14,7 +14,9 @@ import com.majie.stugrade.R;
 import com.majie.stugrade.ui.BaseActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -29,8 +31,22 @@ public class ScoreMainActivity extends BaseActivity{
 
         ListView mListView = (ListView) findViewById(R.id.list);
         mListView.setAdapter(mAdapter = new ScoreAdapter(ScoreMainActivity.this,R.layout.score_layout));
+        initData();
     }
 
+    private void initData(){
+        List<ScoreEntity> entities = new ArrayList<>();
+        for (int i = 0;i<10;i++) {
+            ScoreEntity entity = new ScoreEntity();
+            entity.setDate(System.currentTimeMillis());
+            entity.setOtherScore(10);
+            entity.setRestScore(13);
+            entity.setStudyScore(12);
+            entity.setExerciseScore(12);
+            entities.add(entity);
+            mAdapter.add(entity);
+        }
+    }
 
     private class ScoreAdapter extends ArrayAdapter<ScoreEntity>{
 
@@ -46,18 +62,18 @@ public class ScoreMainActivity extends BaseActivity{
             if (convertView == null) {
                 viewHolder = new ScoreViewHolder();
                 convertView = LayoutInflater.from(ScoreMainActivity.this).inflate(resource,null);
-                viewHolder.studyScore = (TextView) findViewById(R.id.study_score);
-                viewHolder.exerciseScore = (TextView) findViewById(R.id.exercise_score);
-                viewHolder.restScore = (TextView) findViewById(R.id.rest_score);
-                viewHolder.otherScore = (TextView) findViewById(R.id.other_score);
-                viewHolder.date = (TextView) findViewById(R.id.score_date);
+                viewHolder.studyScore = (TextView) convertView.findViewById(R.id.study_score);
+                viewHolder.exerciseScore = (TextView) convertView.findViewById(R.id.exercise_score);
+                viewHolder.restScore = (TextView) convertView.findViewById(R.id.rest_score);
+                viewHolder.otherScore = (TextView) convertView.findViewById(R.id.other_score);
+                viewHolder.date = (TextView) convertView.findViewById(R.id.score_date);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ScoreViewHolder)convertView.getTag();
             }
             ScoreEntity curScore = getItem(position);
             if (curScore != null) {
-                viewHolder.date.setText(new SimpleDateFormat("yy/mm/dd", Locale.CHINA).format(new Date(curScore.getDate())));
+                viewHolder.date.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA).format(new Date(curScore.getDate())));
                 viewHolder.studyScore.setText(String.valueOf(curScore.getStudyScore()));
                 viewHolder.exerciseScore.setText(String.valueOf(curScore.getExerciseScore()));
                 viewHolder.restScore.setText(String.valueOf(curScore.getRestScore()));

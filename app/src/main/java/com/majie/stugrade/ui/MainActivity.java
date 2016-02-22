@@ -4,7 +4,6 @@ package com.majie.stugrade.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.*;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -17,6 +16,8 @@ import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.SpatialRelationUtil;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.majie.stugrade.App;
@@ -216,6 +217,23 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+                //收到定位信息后
+                LatLng newLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+
+                if (SpatialRelationUtil.isCircleContainsPoint(Constants.westRestLatLng, 200, newLatLng)) {
+                    Toast.makeText(MainActivity.this, "休息时间", Toast.LENGTH_SHORT).show();
+                } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.eastRestLatLng, 200, newLatLng)) {
+                    Toast.makeText(MainActivity.this, "休息时间", Toast.LENGTH_SHORT).show();
+                } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.sportLatLng, 400, newLatLng)) {
+                    Toast.makeText(MainActivity.this, "运动时间", Toast.LENGTH_SHORT).show();
+                } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.studyMainLatLng, 150, newLatLng)) {
+                    Toast.makeText(MainActivity.this, "学习时间", Toast.LENGTH_SHORT).show();
+                } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.studyLatLng, 100, newLatLng)) {
+                    Toast.makeText(MainActivity.this, "学习时间", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "其他时间", Toast.LENGTH_SHORT).show();
+                }
+
                 StringBuffer sb = new StringBuffer(256);
                 sb.append("time : ");
                 /**

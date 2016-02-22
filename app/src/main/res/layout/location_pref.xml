@@ -4,60 +4,135 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="GPS"
-            android:layout_weight="1"
-            android:textSize="18sp"/>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gps"/>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/high_AccuracyLL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Wi-Fi"
             android:layout_weight="1"
-            android:textSize="18sp"/>
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="高精度模式"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="同时使用网络定位和GPS定位，优先返回最高精度的定位结果"
+                android:textSize="12sp" />
+        </LinearLayout>
+
 
         <CheckBox
+            android:id="@+id/high_Accuracy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/net"/>
+            android:layout_marginLeft="20dp"
+            android:clickable="false"
+            android:focusable="false" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#878787" />
 
     <LinearLayout
+        android:id="@+id/battery_SavingLL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="混合定位"
             android:layout_weight="1"
-            android:textSize="18sp"/>
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="低功耗定位"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="不使用GPS,只使用网络定位（WiFi和基站）"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <CheckBox
+            android:id="@+id/battery_Saving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/wifi"/>
+            android:layout_marginLeft="20dp"
+            android:clickable="false"
+            android:focusable="false" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#878787" />
+
+    <LinearLayout
+        android:id="@+id/device_SensorsLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="仅用设备定位"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="不适用网络定位，只使用GPS进行定位。"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/device_Sensors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:clickable="false"
+            android:focusable="false" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#878787" />
 </LinearLayout>

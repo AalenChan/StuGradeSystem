@@ -1,10 +1,11 @@
 # StuGradeSystem
+------------
 
-#### 更新：
-      关于、
-      百度定位暂时显示在Main、
-      账号登录的简要逻辑等
-      分数List(未包含假数据)
+#### 分数 :需要把IP地址改成部署服务端的电脑的IP地址
+```
+ScoreMainActivity line 101 :
+URL oracle = new URL("http://192.168.1.104:8080/StuSystem/DataServlet?account=" + params[0]);
+```
 
 ### 课程表
   课程表添加后 有长按功能操作

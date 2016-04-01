@@ -3,10 +3,11 @@ package com.majie.stugrade.ui.score;
 public class ScoreEntity {
     private int id;
     private long date;
-    private double studyScore;
-    private double exerciseScore;
-    private double restScore;
-    private double otherScore;
+    private double studyTime;
+    private double sportTime;
+    private double restTime;
+    private double otherTime;
+    private double score;
 
     public int getId() {
         return id;
@@ -24,35 +25,43 @@ public class ScoreEntity {
         this.date = date;
     }
 
-    public double getStudyScore() {
-        return studyScore;
+    public double getStudyTime() {
+        return studyTime;
     }
 
-    public void setStudyScore(double studyScore) {
-        this.studyScore = studyScore;
+    public void setStudyTime(double studyTime) {
+        this.studyTime = studyTime;
     }
 
-    public double getExerciseScore() {
-        return exerciseScore;
+    public double getSportTime() {
+        return sportTime;
     }
 
-    public void setExerciseScore(double exerciseScore) {
-        this.exerciseScore = exerciseScore;
+    public void setSportTime(double sportTime) {
+        this.sportTime = sportTime;
     }
 
-    public double getRestScore() {
-        return restScore;
+    public double getRestTime() {
+        return restTime;
     }
 
-    public void setRestScore(double restScore) {
-        this.restScore = restScore;
+    public void setRestTime(double restTime) {
+        this.restTime = restTime;
     }
 
-    public double getOtherScore() {
-        return otherScore;
+    public double getOtherTime() {
+        return otherTime;
     }
 
-    public void setOtherScore(double otherScore) {
-        this.otherScore = otherScore;
+    public void setOtherTime(double otherTime) {
+        this.otherTime = otherTime;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }

@@ -1,8 +1,9 @@
 package com.majie.stugrade.ui.score;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Layout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.majie.stugrade.R;
 import com.majie.stugrade.ui.BaseActivity;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,17 +41,7 @@ public class ScoreMainActivity extends BaseActivity{
     }
 
     private void initData(){
-        List<ScoreEntity> entities = new ArrayList<>();
-        for (int i = 0;i<10;i++) {
-            ScoreEntity entity = new ScoreEntity();
-            entity.setDate(System.currentTimeMillis());
-            entity.setOtherScore(10);
-            entity.setRestScore(13);
-            entity.setStudyScore(12);
-            entity.setExerciseScore(12);
-            entities.add(entity);
-            mAdapter.add(entity);
-        }
+        new getDataAsync().execute("10000");
     }
 
     private class ScoreAdapter extends ArrayAdapter<ScoreEntity>{
@@ -67,6 +63,7 @@ public class ScoreMainActivity extends BaseActivity{
                 viewHolder.restScore = (TextView) convertView.findViewById(R.id.rest_score);
                 viewHolder.otherScore = (TextView) convertView.findViewById(R.id.other_score);
                 viewHolder.date = (TextView) convertView.findViewById(R.id.score_date);
+                viewHolder.totalScore = (TextView) convertView.findViewById(R.id.total_score);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ScoreViewHolder)convertView.getTag();
@@ -74,10 +71,11 @@ public class ScoreMainActivity extends BaseActivity{
             ScoreEntity curScore = getItem(position);
             if (curScore != null) {
                 viewHolder.date.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA).format(new Date(curScore.getDate())));
-                viewHolder.studyScore.setText(String.valueOf(curScore.getStudyScore()));
-                viewHolder.exerciseScore.setText(String.valueOf(curScore.getExerciseScore()));
-                viewHolder.restScore.setText(String.valueOf(curScore.getRestScore()));
-                viewHolder.otherScore.setText(String.valueOf(curScore.getOtherScore()));
+                viewHolder.studyScore.setText(String.valueOf(curScore.getStudyTime()));
+                viewHolder.exerciseScore.setText(String.valueOf(curScore.getSportTime()));
+                viewHolder.restScore.setText(String.valueOf(curScore.getRestTime()));
+                viewHolder.otherScore.setText(String.valueOf(curScore.getOtherTime()));
+                viewHolder.totalScore.setText("总分：" + curScore.getScore());
             }
             return convertView;
         }
@@ -89,6 +87,44 @@ public class ScoreMainActivity extends BaseActivity{
             TextView restScore;
             TextView otherScore;
             TextView date;
+            TextView totalScore;
+        }
+    }
+
+    private class getDataAsync extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            StringBuilder json = new StringBuilder();
+
+            try {
+                URL oracle = new URL("http://192.168.1.104:8080/StuSystem/DataServlet?account=" + params[0]);
+                URLConnection yc = oracle.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(), "UTF-8"));
+                String inputLine = null;
+                while ((inputLine = in.readLine()) != null) {
+                    json.append(inputLine);
+                }
+                in.close();
+                String StrJson = json.toString();
+                System.out.println("原始数据:");
+                System.out.println(StrJson);
+                return StrJson;
+            } catch (Throwable e) {
+                return "";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (!TextUtils.isEmpty(s)) {
+                JSONArray.parse(s);
+                List<ScoreEntity> list = JSON.parseArray(s, ScoreEntity.class);
+                for (ScoreEntity scoreEntity : list) {
+                    mAdapter.add(scoreEntity);
+                }
+            }
+            super.onPostExecute(s);
         }
     }
 }

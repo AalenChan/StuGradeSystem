@@ -114,5 +114,17 @@
                 android:textColor="@android:color/black" />
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/total_score"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="总分：100" />
+        </TableRow>
     </TableLayout>
 </LinearLayout>

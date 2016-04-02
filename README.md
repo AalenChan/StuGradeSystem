@@ -7,6 +7,12 @@ ScoreMainActivity line 101 :
 URL oracle = new URL("http://192.168.1.104:8080/StuSystem/DataServlet?account=" + params[0]);
 ```
 
+```
+MainActivity line 319 :
+URL url = new URL("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?location=" + loc + "&type=" + type);
+```
+
+
 ### 课程表
   课程表添加后 有长按功能操作
   课程表内容也是存放在数据库内 使用OrmLite作为数据库存储框架

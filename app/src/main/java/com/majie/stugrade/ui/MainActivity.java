@@ -2,9 +2,12 @@ package com.majie.stugrade.ui;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,20 +16,29 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
+import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.SpatialRelationUtil;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.majie.stugrade.App;
 import com.majie.stugrade.R;
+import com.majie.stugrade.model.BaseResponse;
 import com.majie.stugrade.ui.baidu.service.LocationService;
 import com.majie.stugrade.ui.kechengbiao.ContentMainActivity;
 import com.majie.stugrade.ui.notes.activity.NotesMainActivity;
 import com.majie.stugrade.ui.score.ScoreMainActivity;
 import com.majie.stugrade.ui.weather.activity.WeatherActivity;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 public class MainActivity extends BaseActivity {
@@ -220,88 +232,39 @@ public class MainActivity extends BaseActivity {
                 //收到定位信息后
                 LatLng newLatLng = new LatLng(location.getLatitude(),location.getLongitude());
 
+                int type;
+
                 if (SpatialRelationUtil.isCircleContainsPoint(Constants.westRestLatLng, 200, newLatLng)) {
+                    type = 1;
                     Toast.makeText(MainActivity.this, "休息时间", Toast.LENGTH_SHORT).show();
                 } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.eastRestLatLng, 200, newLatLng)) {
+                    type = 1;
                     Toast.makeText(MainActivity.this, "休息时间", Toast.LENGTH_SHORT).show();
                 } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.sportLatLng, 400, newLatLng)) {
+                    type = 2;
                     Toast.makeText(MainActivity.this, "运动时间", Toast.LENGTH_SHORT).show();
                 } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.studyMainLatLng, 150, newLatLng)) {
+                    type = 3;
                     Toast.makeText(MainActivity.this, "学习时间", Toast.LENGTH_SHORT).show();
                 } else if (SpatialRelationUtil.isCircleContainsPoint(Constants.studyLatLng, 100, newLatLng)) {
+                    type = 3;
                     Toast.makeText(MainActivity.this, "学习时间", Toast.LENGTH_SHORT).show();
                 } else {
+                    type = 4;
                     Toast.makeText(MainActivity.this, "其他时间", Toast.LENGTH_SHORT).show();
                 }
 
-                StringBuffer sb = new StringBuffer(256);
+                StringBuilder sb = new StringBuilder(256);
                 sb.append("time : ");
-                /**
-                 * 时间也可以使用systemClock.elapsedRealtime()方法 获取的是自从开机以来，每次回调的时间；
-                 * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
-                 */
-                sb.append(location.getTime());
-                sb.append("\nerror code : ");
-                sb.append(location.getLocType());
+
+                new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(),String.valueOf(type));
+
                 sb.append("\nlatitude : ");
                 sb.append(location.getLatitude());
-                sb.append("\nlontitude : ");
+                sb.append("\nlongitude : ");
                 sb.append(location.getLongitude());
-                sb.append("\nradius : ");
-                sb.append(location.getRadius());
-                sb.append("\nCountryCode : ");
-                sb.append(location.getCountryCode());
-                sb.append("\nCountry : ");
-                sb.append(location.getCountry());
-                sb.append("\ncitycode : ");
-                sb.append(location.getCityCode());
-                sb.append("\ncity : ");
-                sb.append(location.getCity());
-                sb.append("\nDistrict : ");
-                sb.append(location.getDistrict());
-                sb.append("\nStreet : ");
-                sb.append(location.getStreet());
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
                 sb.append("\nDescribe: ");
                 sb.append(location.getLocationDescribe());
-                sb.append("\nDirection(not all devices have value): ");
-                sb.append(location.getDirection());
-                sb.append("\nPoi: ");
-                if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
-                    for (int i = 0; i < location.getPoiList().size(); i++) {
-                        Poi poi = (Poi) location.getPoiList().get(i);
-                        sb.append(poi.getName() + ";");
-                    }
-                }
-                if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-                    sb.append("\nspeed : ");
-                    sb.append(location.getSpeed());// 单位：km/h
-                    sb.append("\nsatellite : ");
-                    sb.append(location.getSatelliteNumber());
-                    sb.append("\nheight : ");
-                    sb.append(location.getAltitude());// 单位：米
-                    sb.append("\ndescribe : ");
-                    sb.append("gps定位成功");
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-                    // 运营商信息
-                    sb.append("\noperationers : ");
-                    sb.append(location.getOperators());
-                    sb.append("\ndescribe : ");
-                    sb.append("网络定位成功");
-                } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-                    sb.append("\ndescribe : ");
-                    sb.append("离线定位成功，离线定位结果也是有效的");
-                } else if (location.getLocType() == BDLocation.TypeServerError) {
-                    sb.append("\ndescribe : ");
-                    sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-                } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                    sb.append("\ndescribe : ");
-                    sb.append("网络不同导致定位失败，请检查网络是否通畅");
-                } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                    sb.append("\ndescribe : ");
-                    sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-                }
                 logMsg(sb.toString());
             } else {
                 logMsg("定位失败");
@@ -326,4 +289,45 @@ public class MainActivity extends BaseActivity {
         super.onStop();
     }
 
+    private class UpdateLocation extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (!TextUtils.isEmpty(s)) {
+                BaseResponse response = JSON.parseObject(s, BaseResponse.class);
+                if (response.getCode() == 200) {
+                    //成功
+                    Log.d("MainActivity","成功");
+                } else {
+                    //失败
+                    Log.d("MainActivity",response.getMessage());
+                }
+            } else {
+                //失败
+                Log.d("MainActivity","失败");
+            }
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String loc = params[0];
+            String type = params[1];
+
+            StringBuilder json = new StringBuilder();
+            try {
+                URL url = new URL("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?location=" + loc + "&type=" + type);
+                URLConnection yc = url.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(), "UTF-8"));
+                String inputLine = null;
+                while ((inputLine = in.readLine()) != null) {
+                    json.append(inputLine);
+                }
+                in.close();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            return json.toString();
+        }
+    }
 }

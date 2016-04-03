@@ -102,11 +102,4 @@ dependencies {
     compile files('libs/baidumapapi_search_v3_7_0.jar')
     compile files('libs/baidumapapi_util_v3_7_0.jar')
     compile files('libs/locSDK_6.12.jar')
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava:1.1.0'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.android.support:multidex:1.0.1'
 }

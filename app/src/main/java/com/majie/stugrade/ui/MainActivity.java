@@ -28,6 +28,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.majie.stugrade.App;
 import com.majie.stugrade.R;
 import com.majie.stugrade.model.BaseResponse;
+import com.majie.stugrade.model.Location;
 import com.majie.stugrade.ui.baidu.service.LocationService;
 import com.majie.stugrade.ui.kechengbiao.ContentMainActivity;
 import com.majie.stugrade.ui.notes.activity.NotesMainActivity;
@@ -36,9 +37,12 @@ import com.majie.stugrade.ui.weather.activity.WeatherActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends BaseActivity {
@@ -55,6 +59,8 @@ public class MainActivity extends BaseActivity {
     private TextView locationResult;
     private int userID;
 
+    //当前位置类型，用来判断是否位置类型发生改变
+    private int curType = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,9 +226,8 @@ public class MainActivity extends BaseActivity {
         locationService.start();
     }
 
-    /*****
-     * copy function to you project
-     * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
+    /**
+     * 这个服务是不断调用的
      */
     private BDLocationListener mListener = new BDLocationListener() {
 
@@ -257,8 +262,6 @@ public class MainActivity extends BaseActivity {
                 StringBuilder sb = new StringBuilder(256);
                 sb.append("time : ");
 
-                new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(),String.valueOf(type));
-
                 sb.append("\nlatitude : ");
                 sb.append(location.getLatitude());
                 sb.append("\nlongitude : ");
@@ -266,6 +269,20 @@ public class MainActivity extends BaseActivity {
                 sb.append("\nDescribe: ");
                 sb.append(location.getLocationDescribe());
                 logMsg(sb.toString());
+
+                //如果与上次位置type不同，立即更新位置
+                //如果相同，等待timer到约定时间后上传
+
+                if (type == curType) {
+                    //判断是否整点 如果是整点则应该更新位置，（调整 取余数可以调整时间间隔）
+                    if ((int)(System.currentTimeMillis() / 1000) % 3600 == 0){
+                        new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type));
+                    }
+                } else {
+                    curType = type;
+                    //立即更新位置到服务器，不打断计时器的约定时间
+                    new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type));
+                }
             } else {
                 logMsg("定位失败");
             }
@@ -319,7 +336,7 @@ public class MainActivity extends BaseActivity {
                 URL url = new URL("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?location=" + loc + "&type=" + type);
                 URLConnection yc = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(), "UTF-8"));
-                String inputLine = null;
+                String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     json.append(inputLine);
                 }

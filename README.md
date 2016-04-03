@@ -1,6 +1,13 @@
 # StuGradeSystem
 ------------
 
+
+#### 更新
+
+    每小时(整点)更新一次位置信息给服务器；
+    间隔可调整参数去调整；
+
+
 #### 分数 :需要把IP地址改成部署服务端的电脑的IP地址
 ```
 ScoreMainActivity line 101 :
@@ -8,7 +15,7 @@ URL oracle = new URL("http://192.168.1.104:8080/StuSystem/DataServlet?account=" 
 ```
 
 ```
-MainActivity line 319 :
+MainActivity line 336 :
 URL url = new URL("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?location=" + loc + "&type=" + type);
 ```
 

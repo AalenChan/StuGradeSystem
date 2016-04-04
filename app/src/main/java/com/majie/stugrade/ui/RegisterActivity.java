@@ -1,15 +1,19 @@
 package com.majie.stugrade.ui;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.majie.stugrade.R;
+import com.majie.stugrade.model.User;
 
 public class RegisterActivity extends BaseActivity{
 	
@@ -21,6 +25,8 @@ public class RegisterActivity extends BaseActivity{
 	
 	private Button loginBtn;
 	private Button cancelBtn;
+
+	private ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +83,39 @@ public class RegisterActivity extends BaseActivity{
 			Toast.makeText(RegisterActivity.this, "专业不可为空", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+
+		User user = new User();
+		user.setAccount(accountEt.getText().toString().trim());
+		user.setPwd(pwdEt.getText().toString().trim());
+		user.setMajor(majorEt.getText().toString().trim());
+		user.setName(nameEt.getText().toString().trim());
+
+		progressDialog = new ProgressDialog(RegisterActivity.this);
+		progressDialog.show();
+
+//		new RegisterAsync().equals(user);
+
 		Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
 		intent.putExtra("userId", 0);
 		startActivity(intent);
+	}
+
+	private class RegisterAsync extends AsyncTask<User,Void,String> {
+
+		@Override
+		protected void onPostExecute(String s) {
+
+			progressDialog.dismiss();
+
+
+			super.onPostExecute(s);
+		}
+
+		@Override
+		protected String doInBackground(User... params) {
+
+
+			return null;
+		}
 	}
 }

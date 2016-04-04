@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
     private Button courseBtn;
 
     private TextView locationResult;
-    private int userID;
+    private String userID = "10000";
 
     //当前位置类型，用来判断是否位置类型发生改变
     private int curType = 0;
@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity {
         });
 
         if (getIntent().hasExtra("userID")) {
-            userID = getIntent().getIntExtra("userID", 0);
+            userID = getIntent().getStringExtra("userID");
         }
     }
 
@@ -279,12 +279,12 @@ public class MainActivity extends BaseActivity {
                     int interval = (int)((System.currentTimeMillis() - lastUpdateTime)/ 1000);
                     //判断是否整点 如果是整点则应该更新位置，（调整 取余数可以调整时间间隔）
                     if ((int)(System.currentTimeMillis() / 1000) % 3600 == 0){
-                        new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type),String.valueOf(interval));
+                        new UpdateLocation().execute(userID,location.getLatitude() + "," + location.getLongitude(), String.valueOf(type),String.valueOf(interval));
                     }
                 } else {
                     curType = type;
                     //立即更新位置到服务器，不打断计时器的约定时间
-                    new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type),"0");
+                    new UpdateLocation().execute(userID,location.getLatitude() + "," + location.getLongitude(), String.valueOf(type),"0");
                 }
             } else {
                 logMsg("定位失败");
@@ -336,14 +336,15 @@ public class MainActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String loc = params[0];
-            String type = params[1];
-            String interval = params[2];
+            String account = params[0];
+            String loc = params[1];
+            String type = params[2];
+            String interval = params[3];
 
             StringBuilder json = new StringBuilder();
             try {
 
-                StringBuilder urlStr = new StringBuilder("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?location=" + loc + "&type=" + type);
+                StringBuilder urlStr = new StringBuilder("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?account="+ account +"&location=" + loc + "&type=" + type);
                 if (!interval.isEmpty() && !"0".equals(interval)) {
                     urlStr.append("&interval=").append(interval);
                 }

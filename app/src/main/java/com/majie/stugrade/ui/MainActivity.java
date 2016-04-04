@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity {
 
     //当前位置类型，用来判断是否位置类型发生改变
     private int curType = 0;
+    private long lastUpdateTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -273,15 +274,17 @@ public class MainActivity extends BaseActivity {
                 //如果与上次位置type不同，立即更新位置
                 //如果相同，等待timer到约定时间后上传
 
-                if (type == curType) {
+                if (type == curType && lastUpdateTime != 0) {
+                    //距离上次提交的间隔分钟数
+                    int interval = (int)((System.currentTimeMillis() - lastUpdateTime)/ 1000);
                     //判断是否整点 如果是整点则应该更新位置，（调整 取余数可以调整时间间隔）
                     if ((int)(System.currentTimeMillis() / 1000) % 3600 == 0){
-                        new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type));
+                        new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type),String.valueOf(interval));
                     }
                 } else {
                     curType = type;
                     //立即更新位置到服务器，不打断计时器的约定时间
-                    new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type));
+                    new UpdateLocation().execute(location.getLatitude() + "," + location.getLongitude(), String.valueOf(type),"0");
                 }
             } else {
                 logMsg("定位失败");
@@ -306,10 +309,15 @@ public class MainActivity extends BaseActivity {
         super.onStop();
     }
 
+
+    //一共上传三个参数  最新位置；当前定位类型；距离上次更新的时间分钟数
     private class UpdateLocation extends AsyncTask<String,Void,String> {
 
         @Override
         protected void onPostExecute(String s) {
+            //更新时间，忽略可作弊情况，假定一切按照预定行为
+            lastUpdateTime = System.currentTimeMillis();
+
             if (!TextUtils.isEmpty(s)) {
                 BaseResponse response = JSON.parseObject(s, BaseResponse.class);
                 if (response.getCode() == 200) {
@@ -330,10 +338,18 @@ public class MainActivity extends BaseActivity {
         protected String doInBackground(String... params) {
             String loc = params[0];
             String type = params[1];
+            String interval = params[2];
 
             StringBuilder json = new StringBuilder();
             try {
-                URL url = new URL("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?location=" + loc + "&type=" + type);
+
+                StringBuilder urlStr = new StringBuilder("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?location=" + loc + "&type=" + type);
+                if (!interval.isEmpty() && !"0".equals(interval)) {
+                    urlStr.append("&interval=").append(interval);
+                }
+
+                URL url = new URL(urlStr.toString());
+
                 URLConnection yc = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(), "UTF-8"));
                 String inputLine;

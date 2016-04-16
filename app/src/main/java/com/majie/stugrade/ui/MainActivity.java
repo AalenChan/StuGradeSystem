@@ -343,8 +343,9 @@ public class MainActivity extends BaseActivity {
 
             StringBuilder json = new StringBuilder();
             try {
-
-                StringBuilder urlStr = new StringBuilder("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?account="+ account +"&location=" + loc + "&type=" + type);
+                StringBuilder urlStr = new StringBuilder(Constants.IP);
+                urlStr.append("HandleLocationServlet?account="+ account +"&location=" + loc + "&type=" + type);
+//                StringBuilder urlStr = new StringBuilder("http://192.168.1.104:8080/StuSystem/HandleLocationServlet?account="+ account +"&location=" + loc + "&type=" + type);
                 if (!interval.isEmpty() && !"0".equals(interval)) {
                     urlStr.append("&interval=").append(interval);
                 }

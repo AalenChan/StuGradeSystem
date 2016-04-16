@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.majie.stugrade.R;
 import com.majie.stugrade.ui.BaseActivity;
+import com.majie.stugrade.ui.Constants;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -97,8 +98,10 @@ public class ScoreMainActivity extends BaseActivity{
         protected String doInBackground(String... params) {
             StringBuilder json = new StringBuilder();
 
+            StringBuilder url = new StringBuilder();
+            url.append(Constants.IP).append("DataServlet?account=").append(params[0]);
             try {
-                URL oracle = new URL("http://192.168.1.104:8080/StuSystem/DataServlet?account=" + params[0]);
+                URL oracle = new URL(url.toString());
                 URLConnection yc = oracle.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(), "UTF-8"));
                 String inputLine = null;

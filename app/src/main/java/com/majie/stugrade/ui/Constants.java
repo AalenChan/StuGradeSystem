@@ -21,4 +21,7 @@ public class Constants {
     public static final int SPORT_TIME = 2;
     public static final int STUDY_TIME = 3;
     public static final int OTHER_TIME = 4;
+
+
+    public static final String IP = "http://192.168.1.104:8080/StuSystem/";
 }
